@@ -1,0 +1,13 @@
+[build]
+  publish = "public"
+  functions = "."
+
+[[redirects]]
+  from = "/alunos"
+  to = "/.netlify/functions/app"
+  status = 200
+
+[[redirects]]
+  from = "/alunos/*"
+  to = "/.netlify/functions/app/:splat"
+  status = 200
