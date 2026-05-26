@@ -1,3 +1,0 @@
-/alunos /.netlify/functions/app 200
-/alunos/* /.netlify/functions/app/:splat 200
-/* /index.html 200
