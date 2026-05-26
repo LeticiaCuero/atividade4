@@ -1,21 +1,19 @@
 body {
-    background: #f7f8fa;
-}
-
-.navbar-brand {
-    letter-spacing: 0;
-}
-
-.campo-busca {
-    max-width: 360px;
-}
-
-.painel {
     background: #fff;
 }
 
-.table th {
-    white-space: nowrap;
+h1 {
+    font-size: 28px;
+}
+
+h2 {
+    font-size: 22px;
+    margin-bottom: 16px;
+}
+
+h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
 }
 
 .acoes {
@@ -23,17 +21,6 @@ body {
 }
 
 .disciplina-linha {
-    background: #fdfdfd;
-}
-
-@media (max-width: 576px) {
-    .campo-busca {
-        max-width: none;
-        width: 100%;
-    }
-
-    .acoes .btn {
-        width: 2.5rem;
-        height: 2.5rem;
-    }
+    border: 1px solid #dee2e6;
+    padding: 12px;
 }

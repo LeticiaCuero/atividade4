@@ -7,7 +7,6 @@ const estado = {
 
 const elementos = {
     alerta: document.getElementById('alerta'),
-    filtro: document.getElementById('filtro'),
     tabelaAlunos: document.getElementById('tabelaAlunos'),
     detalheRa: document.getElementById('detalheRa'),
     detalheNome: document.getElementById('detalheNome'),
@@ -19,8 +18,7 @@ const elementos = {
     editRa: document.getElementById('editRa'),
     editNome: document.getElementById('editNome'),
     camposDisciplinas: document.getElementById('camposDisciplinas'),
-    btnAdicionarDisciplina: document.getElementById('btnAdicionarDisciplina'),
-    btnAtualizarDetalhes: document.getElementById('btnAtualizarDetalhes')
+    btnAdicionarDisciplina: document.getElementById('btnAdicionarDisciplina')
 };
 
 function mostrarAlerta(tipo, mensagem) {
@@ -61,36 +59,30 @@ async function requestJson(url, options = {}) {
     return dados;
 }
 
-function criarBotao(icone, texto, classe, onClick) {
+function criarBotao(texto, classe, onClick) {
     const botao = document.createElement('button');
     botao.type = 'button';
     botao.className = classe;
-    botao.title = texto;
-    botao.innerHTML = `<i class="bi ${icone}"></i><span class="d-none d-md-inline ms-1">${texto}</span>`;
+    botao.textContent = texto;
     botao.addEventListener('click', onClick);
     return botao;
 }
 
 function renderizarAlunos() {
-    const filtro = elementos.filtro.value.trim().toLowerCase();
-    const alunosFiltrados = estado.alunos.filter((aluno) => {
-        return aluno.ra.toLowerCase().includes(filtro) || aluno.nome.toLowerCase().includes(filtro);
-    });
-
     elementos.tabelaAlunos.innerHTML = '';
 
-    if (alunosFiltrados.length === 0) {
+    if (estado.alunos.length === 0) {
         elementos.tabelaAlunos.innerHTML = '<tr><td colspan="3" class="text-center py-4">Nenhum aluno encontrado</td></tr>';
         return;
     }
 
-    alunosFiltrados.forEach((aluno) => {
+    estado.alunos.forEach((aluno) => {
         const linha = document.createElement('tr');
         const acoes = document.createElement('td');
-        acoes.className = 'text-end acoes';
+        acoes.className = 'acoes';
 
-        const btnDetalhes = criarBotao('bi-eye', 'Detalhes', 'btn btn-sm btn-outline-primary me-1', () => selecionarAluno(aluno.ra));
-        const btnEditar = criarBotao('bi-pencil', 'Editar', 'btn btn-sm btn-outline-secondary', () => selecionarAluno(aluno.ra, true));
+        const btnDetalhes = criarBotao('Detalhes', 'btn btn-sm btn-outline-primary me-1', () => selecionarAluno(aluno.ra));
+        const btnEditar = criarBotao('Editar', 'btn btn-sm btn-outline-secondary', () => selecionarAluno(aluno.ra, true));
 
         acoes.append(btnDetalhes, btnEditar);
         linha.innerHTML = `<td>${escaparHtml(aluno.ra)}</td><td>${escaparHtml(aluno.nome)}</td>`;
@@ -157,7 +149,7 @@ function criarCampoDisciplina(disciplina = { codigo: '', nome: '', professor: ''
             </div>
             <div class="col-md-1 d-grid">
                 <button class="btn btn-outline-danger" type="button" title="Remover disciplina">
-                    <i class="bi bi-trash"></i>
+                    Remover
                 </button>
             </div>
         </div>
@@ -245,13 +237,7 @@ async function salvarAluno(event) {
     }
 }
 
-elementos.filtro.addEventListener('input', renderizarAlunos);
 elementos.formAluno.addEventListener('submit', salvarAluno);
 elementos.btnAdicionarDisciplina.addEventListener('click', () => criarCampoDisciplina());
-elementos.btnAtualizarDetalhes.addEventListener('click', () => {
-    if (estado.alunoSelecionado) {
-        selecionarAluno(estado.alunoSelecionado.ra);
-    }
-});
 
 listarAlunos();
