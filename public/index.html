@@ -3,9 +3,112 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Atividade 4 - API Alunos</title>
+    <title>Atividade 4 - Alunos</title>
 </head>
 <body>
+    <h1>Atividade 4 - API de Alunos</h1>
 
+    <h2>Consultar alunos</h2>
+    <button onclick="listarAlunos()">GET /alunos</button>
+
+    <h2>Consultar aluno por RA</h2>
+    <input id="raConsulta" placeholder="Digite o RA" value="1">
+    <button onclick="buscarAluno()">GET /alunos/:ra</button>
+    <button onclick="buscarDisciplinas()">GET /alunos/:ra/disciplinas</button>
+
+    <h2>Atualizar aluno</h2>
+    <input id="raEdicao" placeholder="RA" value="1">
+    <input id="nomeEdicao" placeholder="Nome do aluno">
+    <textarea id="disciplinasEdicao" rows="8" cols="80" placeholder='[{"codigo":"MAT101","nome":"Matemática","professor":"Prof. Carlos"}]'></textarea>
+    <br>
+    <button onclick="atualizarAluno()">PUT /alunos/:ra</button>
+
+    <h2>Resultado</h2>
+    <pre id="resultado"></pre>
+
+    <script>
+        const API_BASE_URL = 'https://two0261-frontend.onrender.com/alunos';
+        const resultado = document.getElementById('resultado');
+
+        function mostrar(dados) {
+            resultado.textContent = JSON.stringify(dados, null, 2);
+        }
+
+        function mostrarErro(error) {
+            resultado.textContent = error.message;
+        }
+
+        async function requestJson(url, options = {}) {
+            const response = await fetch(url, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                ...options,
+            });
+
+            const dados = await response.json();
+
+            if (!response.ok) {
+                throw new Error(JSON.stringify(dados, null, 2));
+            }
+
+            return dados;
+        }
+
+        async function listarAlunos() {
+            try {
+                const alunos = await requestJson(API_BASE_URL);
+                mostrar(alunos);
+            } catch (error) {
+                mostrarErro(error);
+            }
+        }
+
+        async function buscarAluno() {
+            const ra = document.getElementById('raConsulta').value;
+
+            try {
+                const aluno = await requestJson(`${API_BASE_URL}/${ra}`);
+                mostrar(aluno);
+            } catch (error) {
+                mostrarErro(error);
+            }
+        }
+
+        async function buscarDisciplinas() {
+            const ra = document.getElementById('raConsulta').value;
+
+            try {
+                const disciplinas = await requestJson(`${API_BASE_URL}/${ra}/disciplinas`);
+                mostrar(disciplinas);
+            } catch (error) {
+                mostrarErro(error);
+            }
+        }
+
+        async function atualizarAluno() {
+            const ra = document.getElementById('raEdicao').value;
+            const nome = document.getElementById('nomeEdicao').value;
+            const disciplinasTexto = document.getElementById('disciplinasEdicao').value;
+
+            try {
+                const dados = {
+                    nome,
+                    disciplinas: JSON.parse(disciplinasTexto),
+                };
+
+                const aluno = await requestJson(`${API_BASE_URL}/${ra}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(dados),
+                });
+
+                mostrar(aluno);
+            } catch (error) {
+                mostrarErro(error);
+            }
+        }
+
+        buscarAluno();
+    </script>
 </body>
 </html>
