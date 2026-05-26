@@ -1,20 +1,17 @@
 {
-  "name": "minhaapi",
+  "name": "atividade-4-alunos",
   "version": "1.0.0",
-  "description": "",
+  "description": "Front-end com Bootstrap consumindo API de alunos",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "build": "echo \"Netlify Functions ready\""
+    "build": "echo \"Aplicacao pronta\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mongoose": "^9.6.2",
     "nodemon": "^3.1.14"
   }
 }

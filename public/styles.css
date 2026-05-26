@@ -1,0 +1,39 @@
+body {
+    background: #f7f8fa;
+}
+
+.navbar-brand {
+    letter-spacing: 0;
+}
+
+.campo-busca {
+    max-width: 360px;
+}
+
+.painel {
+    background: #fff;
+}
+
+.table th {
+    white-space: nowrap;
+}
+
+.acoes {
+    min-width: 160px;
+}
+
+.disciplina-linha {
+    background: #fdfdfd;
+}
+
+@media (max-width: 576px) {
+    .campo-busca {
+        max-width: none;
+        width: 100%;
+    }
+
+    .acoes .btn {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}

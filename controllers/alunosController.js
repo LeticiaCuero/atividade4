@@ -1,11 +1,15 @@
 const alunosModel = require('../models/alunos');
 
 function tratarErro(res, error) {
-    if (error.message === 'Aluno não encontrado') {
+    if (error.message === 'Aluno nao encontrado') {
         return res.status(404).json({ error: error.message });
     }
 
-    return res.status(500).json({ error: error.message });
+    if (error.message === 'Dados invalidos') {
+        return res.status(400).json({ error: error.message });
+    }
+
+    return res.status(500).json({ error: 'Erro interno do servidor' });
 }
 
 exports.obterTodos = async (req, res) => {
