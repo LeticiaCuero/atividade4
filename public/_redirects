@@ -1,3 +1,0 @@
-/alunos /alunos 200
-/alunos/* /alunos/:splat 200
-/* /index.html 200

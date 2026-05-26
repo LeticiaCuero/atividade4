@@ -1,0 +1,105 @@
+<main class="container">
+  <h1>Alunos</h1>
+
+  <p *ngIf="mensagem" class="mensagem" [class.sucesso]="tipoMensagem === 'sucesso'" [class.erro]="tipoMensagem === 'erro'">
+    {{ mensagem }}
+  </p>
+
+  <section>
+    <h2>Lista de alunos</h2>
+
+    <p *ngIf="carregando">Carregando...</p>
+
+    <table *ngIf="!carregando">
+      <thead>
+        <tr>
+          <th>RA</th>
+          <th>Nome</th>
+          <th>Acoes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let aluno of alunos">
+          <td>{{ aluno.ra }}</td>
+          <td>{{ aluno.nome }}</td>
+          <td>
+            <button type="button" (click)="selecionarAluno(aluno.ra)">Detalhes</button>
+            <button type="button" (click)="selecionarAluno(aluno.ra, true)">Editar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Detalhes do aluno</h2>
+
+    <div *ngIf="alunoSelecionado; else nenhumAluno">
+      <p><strong>RA:</strong> {{ alunoSelecionado.ra }}</p>
+      <p><strong>Nome:</strong> {{ alunoSelecionado.nome }}</p>
+      <p><strong>Quantidade de disciplinas:</strong> {{ alunoSelecionado.disciplinas.length }}</p>
+
+      <h3>Resumo das disciplinas</h3>
+      <ul>
+        <li *ngFor="let disciplina of alunoSelecionado.disciplinas">
+          {{ disciplina.codigo }} - {{ disciplina.nome }}
+        </li>
+      </ul>
+    </div>
+
+    <ng-template #nenhumAluno>
+      <p>Nenhum aluno selecionado.</p>
+    </ng-template>
+  </section>
+
+  <section>
+    <h2>Disciplinas do aluno</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Codigo</th>
+          <th>Nome</th>
+          <th>Professor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let disciplina of disciplinas">
+          <td>{{ disciplina.codigo }}</td>
+          <td>{{ disciplina.nome }}</td>
+          <td>{{ disciplina.professor }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="edicao">
+    <h2>Editar aluno</h2>
+
+    <form *ngIf="alunoEditado" (ngSubmit)="salvarAluno()">
+      <label for="ra">RA</label>
+      <input id="ra" name="ra" type="text" [(ngModel)]="alunoEditado.ra" readonly>
+
+      <label for="nome">Nome</label>
+      <input id="nome" name="nome" type="text" [(ngModel)]="alunoEditado.nome" required>
+
+      <h3>Lista de disciplinas</h3>
+
+      <div *ngFor="let disciplina of alunoEditado.disciplinas; let i = index" class="disciplina">
+        <label [for]="'codigo-' + i">Codigo</label>
+        <input [id]="'codigo-' + i" [name]="'codigo-' + i" type="text" [(ngModel)]="disciplina.codigo" required>
+
+        <label [for]="'disciplina-' + i">Nome</label>
+        <input [id]="'disciplina-' + i" [name]="'disciplina-' + i" type="text" [(ngModel)]="disciplina.nome" required>
+
+        <label [for]="'professor-' + i">Professor</label>
+        <input [id]="'professor-' + i" [name]="'professor-' + i" type="text" [(ngModel)]="disciplina.professor" required>
+
+        <button type="button" (click)="removerDisciplina(i)">Remover</button>
+      </div>
+
+      <button type="button" (click)="adicionarDisciplina()">Adicionar disciplina</button>
+      <button type="submit">Salvar</button>
+    </form>
+  </section>
+</main>
